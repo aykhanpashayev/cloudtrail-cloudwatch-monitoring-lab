@@ -28,56 +28,82 @@ This project demonstrates how to implement monitoring and alerting for security-
 
 ## 📂 Project Structure
 
-📁 screenshots
-├── Task1(1).png
-├── Task1(2).png
-├── Task2(1).png
-├── Task2(2).png
-├── Task2(3).png
-├── Task3(1).png
-├── Task3(2).png
-├── Task3(3).png
-├── Task4(1).png
-├── Task4(2).png
-├── Task4(3).png
-├── Task4(4).png
-├── Task4(5).png
-├── Task5.png
-📁 architecture
-├── end-task-3.png
-├── end-task-5.png
+├── architecture/ # Final architecture diagrams
+├── screenshots/ # Task-by-task lab screenshots
+
 
 
 ---
 
-## 🖼️ Screenshots by Task
+## 📸 Screenshots
 
-### 🔹 Task 1 – CloudTrail Event History
-- `Task1(1).png`, `Task1(2).png`
+All screenshots are organized by task:
 
-### 🔹 Task 2 – SNS Topic + Email Subscription
-- `Task2(1).png` to `Task2(3).png`
+<details>
+  <summary><strong>Task 1</strong></summary>
 
-### 🔹 Task 3 – EventBridge Rule + EC2 Security Group Edit
-- `Task3(1).png` to `Task3(3).png`
-- Architecture: `end-task-3.png`
+- 📷 Task1(1).png  
+- 📷 Task1(2).png  
 
-### 🔹 Task 4 – CloudWatch Alarm on Failed Logins
-- `Task4(1).png` to `Task4(5).png`
+</details>
 
-### 🔹 Task 5 – Logs Insights Query
-- `Task5.png`
-- Final Architecture: `end-task-5.png`
+<details>
+  <summary><strong>Task 2</strong></summary>
+
+- 📷 Task2(1).png  
+- 📷 Task2(2).png  
+
+</details>
+
+<details>
+  <summary><strong>Task 3</strong></summary>
+
+- 📷 Task3(!).png  
+- 📷 Task3(2).png  
+- 📷 Task3(3).png  
+- 📷 Task3(4).png  
+
+</details>
+
+<details>
+  <summary><strong>Task 4</strong></summary>
+
+- 📷 Task4(1).png  
+- 📷 Task4(2).png  
+- 📷 Task4(3).png  
+- 📷 Task4(4).png  
+
+</details>
+
+<details>
+  <summary><strong>Task 5</strong></summary>
+
+- 📷 Task5.png  
+
+</details>
 
 ---
 
-## 📬 Note
-The email notification screenshot was not captured due to delivery issues, but the SNS subscription was confirmed and tested during the lab.
+## 🗂 Architecture Diagrams
+
+Final architecture for critical tasks:
+
+- 🧩 `architecture/end-task-3.png` — CloudWatch alarm setup  
+- 🧩 `architecture/end-task-5.png` — Event monitoring flow  
 
 ---
 
-## ✅ Lab Status
-**Lab completed successfully.** All services were configured and verified as working through AWS Management Console and CloudWatch Insights.
+## ✅ Status
+
+✔️ Lab completed successfully  
+✔️ Screenshots and diagrams organized and committed  
+
+---
+
+## 📌 Notes
+
+- All logs were tested and confirmed in CloudTrail and CloudWatch.  
+- Subscription confirmation for alerts was completed manually.  
 
 ---
 
