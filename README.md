@@ -68,7 +68,7 @@ Feel free to clone / fork if you want to replicate the setup or use the README a
 
 | Step | What I did | Proof |
 |------|------------|-------|
-| 1 | Built a rule called `MonitorSecurityGroups` with this JSON event pattern:<br>`AuthorizeSecurityGroupIngress` or `ModifyNetworkInterfaceAttribute` from `ec2.amazonaws.com`. | ![Task 3-1](screenshots/Task3(1).png) |
+| 1 | Built a rule called `MonitorSecurityGroups` with this JSON event pattern:<br>`AuthorizeSecurityGroupIngress` or `ModifyNetworkInterfaceAttribute` from `ec2.amazonaws.com`. | ![Task 3-1](screenshots/Task3(!).png) |
 | 2 | Configured an **Input Transformer** to craft a meaningful alert message that includes the SG-ID, API call, timestamp and full request parameters. | ![Task 3-2](screenshots/Task3(2).png) |
 | 3 | Simulated a change by adding an **SSH (22)** inbound rule to `LabSecurityGroup`. CloudTrail captured the `AuthorizeSecurityGroupIngress` event. | ![Task 3-3](screenshots/Task3(3).png) |
 | 4 | Received the SNS email alert triggered by the rule (proof of end-to-end pipeline). | ![Task 3-4](screenshots/Task3(4).png) |
@@ -90,8 +90,7 @@ Feel free to clone / fork if you want to replicate the setup or use the README a
 
 | Step | What I did | Proof |
 |------|------------|-------|
-| 1 | Queried `CloudTrailLogGroup` for failed console logins, grouped by source IP, region and IAM ARN. | ![Task 5-1](screenshots/Task5(1).png) |
-| 2 | The table shows counts per attacker IP and ties directly to the alarm above — great for investigation. | ![Task 5-2](screenshots/Task5(2).png) |
+| 1 | Queried `CloudTrailLogGroup` for failed console logins, grouped by source IP, region and IAM ARN. | ![Task 5-1](screenshots/Task5.png) |
 
 ---
 
