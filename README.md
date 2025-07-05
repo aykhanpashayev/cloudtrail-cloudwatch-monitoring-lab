@@ -1,55 +1,87 @@
-# AWS Monitoring & Alerting Lab: CloudTrail, CloudWatch, EventBridge, and SNS
+# 🛡️ AWS Cloud Security Lab 6.1 – Monitoring and Alerting
 
-## 🧠 Objective
-
-This project demonstrates how to implement centralized logging, monitoring, and alerting on AWS using:
-
-- AWS CloudTrail
-- Amazon CloudWatch
-- Amazon SNS (Simple Notification Service)
-- Amazon EventBridge
-
-By the end of this lab, the system was configured to:
-- Track API activity with CloudTrail
-- Send email alerts on security group changes using EventBridge + SNS
-- Trigger CloudWatch alarms for multiple failed login attempts
-- Query failed login attempts using CloudWatch Logs Insights
-
-## 🛠️ AWS Services Used
-
-- **AWS CloudTrail**: Tracks API calls across the AWS account.
-- **Amazon CloudWatch**: Collects metrics, creates alarms, and stores log data.
-- **Amazon SNS**: Sends notifications (email alerts).
-- **Amazon EventBridge**: Detects specific API calls and triggers notifications.
-- **AWS IAM**: For user identity and login testing.
-- **Amazon EC2**: Used to simulate a security group modification event.
+## 🔍 Overview
+This project demonstrates how to implement monitoring and alerting for security-relevant activities in an AWS environment. The lab combines services like CloudTrail, CloudWatch, SNS, and EventBridge to detect, record, and respond to events such as unauthorized access attempts and changes to EC2 security groups.
 
 ---
 
-## ✅ Task Breakdown
+## 🎯 Objectives
 
-### Task 1: CloudTrail Configuration
-- Analyzed recent CloudTrail events (e.g., `CreateStack` from CloudFormation).
-- Identified key fields: `eventTime`, `userIdentity`, `eventSource`.
-- Reviewed an existing CloudTrail trail configured to send logs to CloudWatch Logs.
+- ✅ Analyze CloudTrail event history
+- ✅ Create a CloudTrail trail with CloudWatch logging
+- ✅ Create an SNS topic with email subscription
+- ✅ Configure an EventBridge rule to monitor EC2 security group changes
+- ✅ Create CloudWatch metric filters and alarms for failed login attempts
+- ✅ Query CloudTrail logs using CloudWatch Logs Insights
 
-### Task 2: SNS Topic & Subscription
-- Created an SNS topic named `MySNSTopic`.
-- Subscribed an email address to the topic.
-- (Note: Email delivery issue was observed, but subscription was confirmed.)
+---
 
-### Task 3: EventBridge Rule for Security Group Changes
-- Created a rule to detect changes like `AuthorizeSecurityGroupIngress`.
-- Configured it to trigger an SNS notification.
-- Modified a security group to test event detection.
-- Verified rule execution and CloudTrail event details.
+## 🧪 Tools & Services Used
 
-### Task 4: CloudWatch Alarm for Failed Logins
-- Created a metric filter for `ConsoleLogin` failures from CloudTrail logs.
-- Created an alarm `FailedLogins` to trigger on 3+ failed login attempts within 5 minutes.
-- Tested login failures via IAM user and confirmed alarm activation.
+- **AWS CloudTrail** – for tracking API activity
+- **Amazon CloudWatch** – for metrics, logs, alarms, and insights
+- **Amazon EventBridge** – to trigger actions based on events
+- **Amazon SNS** – to send notifications
+- **IAM & EC2** – for access control and test environment setup
 
-### Task 5: CloudWatch Logs Insights Query
-- Queried `CloudTrailLogGroup` using CloudWatch Logs Insights to identify failed login sources.
-- Used a custom query to count failures by IP, region, error type, and user.
+---
 
+## 📂 Project Structure
+
+📁 screenshots
+├── Task1(1).png
+├── Task1(2).png
+├── Task2(1).png
+├── Task2(2).png
+├── Task2(3).png
+├── Task3(1).png
+├── Task3(2).png
+├── Task3(3).png
+├── Task4(1).png
+├── Task4(2).png
+├── Task4(3).png
+├── Task4(4).png
+├── Task4(5).png
+├── Task5.png
+📁 architecture
+├── end-task-3.png
+├── end-task-5.png
+
+
+---
+
+## 🖼️ Screenshots by Task
+
+### 🔹 Task 1 – CloudTrail Event History
+- `Task1(1).png`, `Task1(2).png`
+
+### 🔹 Task 2 – SNS Topic + Email Subscription
+- `Task2(1).png` to `Task2(3).png`
+
+### 🔹 Task 3 – EventBridge Rule + EC2 Security Group Edit
+- `Task3(1).png` to `Task3(3).png`
+- Architecture: `end-task-3.png`
+
+### 🔹 Task 4 – CloudWatch Alarm on Failed Logins
+- `Task4(1).png` to `Task4(5).png`
+
+### 🔹 Task 5 – Logs Insights Query
+- `Task5.png`
+- Final Architecture: `end-task-5.png`
+
+---
+
+## 📬 Note
+The email notification screenshot was not captured due to delivery issues, but the SNS subscription was confirmed and tested during the lab.
+
+---
+
+## ✅ Lab Status
+**Lab completed successfully.** All services were configured and verified as working through AWS Management Console and CloudWatch Insights.
+
+---
+
+## 🔗 Author
+**Aykhan Pashayev**  
+Cybersecurity Student @ FIU | Aspiring AWS Cloud Security Engineer
+[LinkedIn](#) *(https://linkedin.com/in/aykhanpashayev)*  
