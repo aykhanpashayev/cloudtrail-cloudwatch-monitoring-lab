@@ -46,67 +46,64 @@ Feel free to clone / fork if you want to replicate the setup or use the README a
 ```
 ---
 
-## 1️⃣ Task 1 — CloudTrail deep-dive & trail creation  
+## 1️⃣ Task 1 — CloudTrail Trail + CloudWatch Logs  
 
-| Screenshot | What’s happening |
-|------------|------------------|
-| ![CloudTrail Event history](screenshots/Task1(1).png) | Inspecting the **Event history** to understand what data CloudTrail logs by default (90-day retention, management events only). |
-| ![Create trail wizard](screenshots/Task1(2).png) | Launching the **Create trail** wizard – planned to store logs in S3 **and** stream to CloudWatch Logs for real-time analytics. |
-| ![Trail permissions error](screenshots/Task1(3).png) | Lab role lacked permission to create a new trail with CWL integration, highlighting least-privilege best practice. |
-| ![Existing managed trail](screenshots/Task1(4).png) | Discovered pre-configured trail `LabCloudTrail` that already streams to Log Group `CloudTrailLogGroup` – reused for the rest of the lab. |
-
-### Key takeaway  
-CloudTrail gives immutable audit logs; forwarding to CloudWatch enables near-real-time alerting without extra infrastructure.
+| Step | What I did | Proof |
+|------|------------|-------|
+| 1 | Inspected **Event History** &nbsp;<br>filtered on `cloudformation.amazonaws.com` and opened the most-recent **CreateStack** event. | ![Task 1-1](screenshots/Task1(1).png) |
+| 2 | Verified the **LabCloudTrail** trail already existed & had CloudWatch Logs enabled. | ![Task 1-2](screenshots/Task1(2).png) |
 
 ---
 
-## 2️⃣ Task 2 — SNS topic & email subscription  
+## 2️⃣ Task 2 — SNS Topic & Email Subscription  
 
-| Screenshot | Description |
-|------------|-------------|
-| ![Create SNS topic](screenshots/Task2(1).png) | Creating **Standard topic** `MySNSTopic`; open publish/subscribe for lab speed. |
-| ![Add email subscription](screenshots/Task2(2).png) | Subscribed personal inbox via **Email protocol** – will receive JSON notifications. |
-| ![Subscription confirmed](screenshots/Task2(3).png) | Confirmation page after clicking link in AWS notification email. |
-
-### Key takeaway  
-SNS decouples producers (EventBridge, CloudWatch Alarms) from consumers (email, SMS, Lambda, etc.).
+| Step | What I did | Proof |
+|------|------------|-------|
+| 1 | Created a **Standard** SNS topic called `MySNSTopic`, opened its detail page, and confirmed the access policy allows *Everyone* to publish/subscribe (lab requirement). | ![Task 2-1](screenshots/Task2(1).png) |
+| 2 | Added an **email** subscription.<br>Left screenshot shows `PendingConfirmation`, right shows `Confirmed` after clicking the link in my inbox. | ![Task 2-2](screenshots/Task2(2).png)<br>![Task 2-3](screenshots/Task2(3).png) |
 
 ---
 
-## 3️⃣ Task 3 — EventBridge rule → alert on security-group changes  
+## 3️⃣ Task 3 — EventBridge Rule for Security-Group Changes  
 
-| Screenshot | Description |
-|------------|-------------|
-| ![Rule pattern JSON](screenshots/Task3(1).png) | Custom event pattern matching `AuthorizeSecurityGroupIngress` & `ModifyNetworkInterfaceAttribute`. |
-| ![Input transformer](screenshots/Task3(2).png) | Input transformer injects SG ID, API name & request JSON into a readable message. |
-| ![Editing SG](screenshots/Task3(3).png) | Added **SSH 0.0.0.0/0** to `LabSecurityGroup` to trigger the rule. |
-| ![Email alert SG change](screenshots/Task3(4).png) | 📧 Received instant alert with full details – proves rule + SNS integration works. |
-
-### Key takeaway  
-EventBridge + CloudTrail lets you build fine-grained, real-time security detection without running servers.
+| Step | What I did | Proof |
+|------|------------|-------|
+| 1 | Built a rule called `MonitorSecurityGroups` with this JSON event pattern:<br>`AuthorizeSecurityGroupIngress` or `ModifyNetworkInterfaceAttribute` from `ec2.amazonaws.com`. | ![Task 3-1](screenshots/Task3(1).png) |
+| 2 | Configured an **Input Transformer** to craft a meaningful alert message that includes the SG-ID, API call, timestamp and full request parameters. | ![Task 3-2](screenshots/Task3(2).png) |
+| 3 | Simulated a change by adding an **SSH (22)** inbound rule to `LabSecurityGroup`. CloudTrail captured the `AuthorizeSecurityGroupIngress` event. | ![Task 3-3](screenshots/Task3(3).png) |
+| 4 | Received the SNS email alert triggered by the rule (proof of end-to-end pipeline). | ![Task 3-4](screenshots/Task3(4).png) |
 
 ---
 
-## 4️⃣ Task 4 — CloudWatch metric filter & alarm for failed console log-ins  
+## 4️⃣ Task 4 — CloudWatch Alarm for Failed Console Logins  
 
-| Screenshot | Description |
-|------------|-------------|
-| ![Metric filter definition](screenshots/Task4(1).png) | Filter pattern counts `ConsoleLogin` events where `errorMessage == "Failed authentication"`. |
-| ![Alarm settings](screenshots/Task4(2).png) | Alarm `FailedLogins` fires when ≥ 3 failures in 5 minutes. |
-| ![Generate failures](screenshots/Task4(3).png) | Intentionally failed sign-ins as user `test` three times. |
-| ![Alarm email](screenshots/Task4(4).png) | 📧 Alarm transitioned to **ALARM** state; notification delivered via SNS. |
-
-### Key takeaway  
-Metric filters turn log patterns into quantitative metrics → alarms → automated response.
+| Step | What I did | Proof |
+|------|------------|-------|
+| 1 | In **CloudTrailLogGroup** I created a **Metric Filter** that increments `ConsoleLoginFailureCount` whenever the log record shows `ConsoleLogin` + `"Failed authentication"`. | ![Task 4-1](screenshots/Task4(1).png) |
+| 2 | Added a CloudWatch **Alarm** `FailedLogins` that triggers when the metric sum ≥ 3 within 5 minutes and sends to `MySNSTopic`. | ![Task 4-2](screenshots/Task4(2).png) |
+| 3 | Used the `test` IAM user to enter a wrong password 3×. Alarm went **In alarm** and the history shows the state change. | ![Task 4-3](screenshots/Task4(3).png) |
+| 4 | Verified the SNS email about multiple failed logins. | ![Task 4-4](screenshots/Task4(4).png) |
 
 ---
 
-## 5️⃣ Task 5 — CloudWatch Logs Insights querying  
+## 5️⃣ Task 5 — Deep-dive with CloudWatch Logs Insights  
 
-| Screenshot | Description |
-|------------|-------------|
-| ![Logs Insights query](screenshots/Task5(1).png) | Logs Insights query filters failed log-ins, groups by IP, reason, region, IAM ARN. |
-| ![Query result](screenshots/Task5(2).png) | Results validate three failures from expected IP – handy for incident forensics. |
+| Step | What I did | Proof |
+|------|------------|-------|
+| 1 | Queried `CloudTrailLogGroup` for failed console logins, grouped by source IP, region and IAM ARN. | ![Task 5-1](screenshots/Task5(1).png) |
+| 2 | The table shows counts per attacker IP and ties directly to the alarm above — great for investigation. | ![Task 5-2](screenshots/Task5(2).png) |
+
+---
+
+## ✅ Key take-aways
+
+* **Centralised logging** with CloudTrail → CloudWatch Logs is the foundation for detection.
+* **EventBridge** rules are perfect for low-latency, pattern-based alerts on specific API calls.
+* **Metric Filters + Alarms** convert raw logs into actionable, threshold-based notifications.
+* **SNS** decouples alert generation from delivery channels (email, SMS, Lambda, …).
+* **Logs Insights** is invaluable for ad-hoc forensics without shipping data elsewhere.
+
+> **Result:** My AWS account now self-detects & alerts on suspicious network changes and brute-force log-in attempts — a solid baseline for production-grade security monitoring.
 
 ### Key takeaway  
 Logs Insights is powerful for ad-hoc security hunts without external SIEM costs.
@@ -141,7 +138,6 @@ Together these services deliver **serverless, pay-as-you-go security monitoring*
 * [Amazon EventBridge](https://docs.aws.amazon.com/eventbridge/latest/userguide/)  
 * [Amazon SNS](https://docs.aws.amazon.com/sns/)  
 * [Amazon CloudWatch](https://docs.aws.amazon.com/cloudwatch/)  
-* AWS Well-Architected – _Security Pillar_ (Logging & Monitoring)
 
 > _Lab content © 2022 Amazon Web Services. Screenshots used under educational fair-use._
 
