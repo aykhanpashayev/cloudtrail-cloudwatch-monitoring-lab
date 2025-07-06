@@ -60,7 +60,7 @@ Feel free to clone / fork if you want to replicate the setup or use the README a
 | Step | What I did | Proof |
 |------|------------|-------|
 | 1 | Created a **Standard** SNS topic called `MySNSTopic`, opened its detail page, and confirmed the access policy allows *Everyone* to publish/subscribe (lab requirement). | ![Task 2-1](screenshots/Task2(1).png) |
-| 2 | Added an **email** subscription.<br>Left screenshot shows `PendingConfirmation`, right shows `Confirmed` after clicking the link in my inbox. | ![Task 2-2](screenshots/Task2(2).png) |
+| 2 | Added an **email** subscription. | ![Task 2-2](screenshots/Task2(2).png) |
 
 ---
 
