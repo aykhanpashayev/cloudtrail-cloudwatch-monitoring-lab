@@ -140,3 +140,8 @@ Together these services deliver **serverless, pay-as-you-go security monitoring*
 
 > _Lab content © 2022 Amazon Web Services. Screenshots used under educational fair-use._
 
+## 🔗 Author
+**Aykhan Pashayev**  
+Cybersecurity Student @ FIU | Aspiring AWS Cloud Security Engineer
+[LinkedIn](#) *(https://linkedin.com/in/aykhanpashayev)*  
+
